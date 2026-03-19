@@ -187,7 +187,7 @@ if __name__ == "__main__":
         print_stm32_lstm_weights(Wf_quant, Wi_quant, Wc_quant, Wo_quant, bf_quant, bi_quant, bc_quant, bo_quant)
 
         print(f"\n" + "=" * 80)
-        print(f"✅ LSTM权重提取+量化完成！直接复制上述内容到STM32工程即可。")
+        print(f" LSTM权重提取+量化完成！直接复制上述内容到STM32工程即可。")
         print(f"=" * 80)
     except Exception as e:
-        print(f"\n❌ 执行失败：{e}")
+        print(f"\n 执行失败：{e}")
