@@ -19,11 +19,11 @@ except Exception as e:
 # ===================== 步骤2：配置TFLite转换器（含量化+LSTM兼容修正） =====================
 converter = tf.lite.TFLiteConverter.from_keras_model(model)
 
-# 2.1 核心：开启优化（包含8位整数量化）
+# 2.1 开启优化（包含8位整数量化）
 converter.optimizations = [tf.lite.Optimize.DEFAULT]
 
 
-# 2.2 核心：定义代表性数据集（用于校准，匹配模型输入形状(1, 12, 3)）
+# 2.2 定义代表性数据集（用于校准，匹配模型输入形状(1, 12, 3)）
 # 作用：让转换器学习数据分布，保证量化后精度不丢失
 def representative_dataset():
     # 加载之前保存的训练时序数据
@@ -37,17 +37,17 @@ def representative_dataset():
 
 converter.representative_dataset = representative_dataset
 
-# 2.3 核心：指定支持INT8算子+Select TF Ops（兼容LSTM，解决之前的转换报错）
+# 2.3 指定支持INT8算子+Select TF Ops（兼容LSTM，解决之前的转换报错）
 converter.target_spec.supported_ops = [
     tf.lite.OpsSet.TFLITE_BUILTINS_INT8,  # 支持INT8轻量化算子（适配STM32）
     tf.lite.OpsSet.SELECT_TF_OPS  # 支持LSTM扩展算子，避免转换报错
 ]
 
-# 2.4 核心：强制输入输出类型为int8（量化到位，减小模型体积）
+# 2.4 强制输入输出类型为int8（量化到位，减小模型体积）
 converter.inference_input_type = tf.int8
 converter.inference_output_type = tf.int8
 
-# 2.5 核心：禁用张量列表操作降级（解决LSTM的TensorListReserve报错）
+# 2.5 禁用张量列表操作降级（解决LSTM的TensorListReserve报错）
 converter._experimental_lower_tensor_list_ops = False
 
 # ===================== 步骤3：执行量化转换 =====================
