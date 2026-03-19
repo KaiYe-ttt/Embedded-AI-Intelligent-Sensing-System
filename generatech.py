@@ -12,12 +12,12 @@ def generate_stm32_lstm_header(weight_npy_path="extracted_lstm_weights.npy", hea
     # -------------------------- 1. 加载提取的权重文件 --------------------------
     try:
         extracted_weights = np.load(weight_npy_path, allow_pickle=True).item()
-        print(f"✅ 成功加载权重文件：{weight_npy_path}")
+        print(f" 成功加载权重文件：{weight_npy_path}")
     except FileNotFoundError:
-        print(f"❌ 错误：未找到权重文件 {weight_npy_path}，请确认文件在当前目录下")
+        print(f" 错误：未找到权重文件 {weight_npy_path}，请确认文件在当前目录下")
         return
     except Exception as e:
-        print(f"❌ 错误：加载权重文件失败 - {e}")
+        print(f" 错误：加载权重文件失败 - {e}")
         return
 
     # -------------------------- 2. 提取核心数据（带空值判断，避免报错） --------------------------
@@ -37,7 +37,7 @@ def generate_stm32_lstm_header(weight_npy_path="extracted_lstm_weights.npy", hea
     # 验证核心权重是否存在
     weight_check_list = [dense16_W, dense16_b, dense1_W, dense1_b]
     if any(w is None for w in weight_check_list):
-        print("⚠️  警告：部分权重数据缺失，生成的头文件可能不完整")
+        print("  警告：部分权重数据缺失，生成的头文件可能不完整")
         print(f"  Dense16 W: {'存在' if dense16_W is not None else '缺失'}")
         print(f"  Dense16 b: {'存在' if dense16_b is not None else '缺失'}")
         print(f"  Dense1 W: {'存在' if dense1_W is not None else '缺失'}")
@@ -144,12 +144,12 @@ def generate_stm32_lstm_header(weight_npy_path="extracted_lstm_weights.npy", hea
     try:
         with open(header_save_path, "w", encoding="utf-8") as f:
             f.write(c_header)
-        print(f"✅ 成功生成C头文件：{header_save_path}")
+        print(f" 成功生成C头文件：{header_save_path}")
         # 核心修正：使用原生os模块获取文件绝对路径
         abs_path = os.path.abspath(header_save_path)
-        print(f"📂 文件保存路径：{abs_path}")
+        print(f" 文件保存路径：{abs_path}")
     except Exception as e:
-        print(f"❌ 错误：保存C头文件失败 - {e}")
+        print(f"错误：保存C头文件失败 - {e}")
         return
 
 
