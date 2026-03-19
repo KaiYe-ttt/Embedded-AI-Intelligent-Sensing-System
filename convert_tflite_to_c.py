@@ -8,7 +8,7 @@ import os
 def tflite_to_c_array(tflite_path, c_header_path):
     # 1. 前置检查：判断TFLite文件是否存在
     if not os.path.exists(tflite_path):
-        print(f"❌ 错误：TFLite文件不存在，请检查路径：{tflite_path}")
+        print(f" 错误：TFLite文件不存在，请检查路径：{tflite_path}")
         return
 
     # 2. 读取TFLite模型二进制数据
@@ -16,12 +16,12 @@ def tflite_to_c_array(tflite_path, c_header_path):
         with open(tflite_path, "rb") as f:
             tflite_data = f.read()
     except Exception as e:
-        print(f"❌ 错误：读取TFLite文件失败：{e}")
+        print(f" 错误：读取TFLite文件失败：{e}")
         return
 
     # 3. 检查模型数据是否为空
     if len(tflite_data) == 0:
-        print(f"❌ 错误：TFLite模型数据为空，文件可能损坏")
+        print(f" 错误：TFLite模型数据为空，文件可能损坏")
         return
 
     # 4. 转换为十六进制数组
@@ -63,10 +63,10 @@ def tflite_to_c_array(tflite_path, c_header_path):
             f.write(f"}};\n\n")
             f.write(f"#endif // LSTM_MODEL_H\n")
 
-        print(f"✅ 成功！C数组头文件已保存至：{c_header_path}")
-        print(f"✅ 模型长度：{model_length} 字节（约{model_length / 1024:.2f} KB）")
+        print(f" 成功！C数组头文件已保存至：{c_header_path}")
+        print(f" 模型长度：{model_length} 字节（约{model_length / 1024:.2f} KB）")
     except Exception as e:
-        print(f"❌ 错误：写入C头文件失败：{e}")
+        print(f" 错误：写入C头文件失败：{e}")
         return
 
 
