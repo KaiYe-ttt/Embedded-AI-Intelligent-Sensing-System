@@ -605,7 +605,7 @@ void lstm_dense1_infer(int8_t* input, int8_t* output)
 }
 
 // ==============================================================================
-// 5. 完整推理封装函数（整合全流程，方便用户调用）
+// 5. 完整推理封装函数
 // ==============================================================================
 /**
  * LSTM模型完整推理（当前：Dense16+Dense1，预留LSTM层接口）
@@ -948,15 +948,15 @@ void lstm_sequence_infer(int8_t input_window[WINDOW_BUF_SIZE][LSTM_INPUT_DIM], i
     // 第三步：修正输出提示
     if (all_saturate)
     {
-        printf("⚠️  警告：LSTM最终输出h_final全为饱和值（%hhd），存在严重数值饱和！\n\n", first_val);
+        printf("  警告：LSTM最终输出h_final全为饱和值（%hhd），存在严重数值饱和！\n\n", first_val);
     }
     else if (all_same)
     {
-        printf("⚠️  警告：LSTM最终输出h_final所有维度值相同（%hhd），状态更新异常！\n\n", first_val);
+        printf("  警告：LSTM最终输出h_final所有维度值相同（%hhd），状态更新异常！\n\n", first_val);
     }
     else
     {
-        printf("✅ LSTM最终输出h_final维度值存在差异，初步判断状态更新正常。\n\n");
+        printf(" LSTM最终输出h_final维度值存在差异，初步判断状态更新正常。\n\n");
     }
 #endif
 }
