@@ -210,7 +210,7 @@ model.summary()
 print("=" * 50)
 
 
-# ===================== 第五步：类别权重+进阶回调） =====================
+# ===================== 第五步：类别权重+回调） =====================
 def train_and_save_ultimate_model(model, X_train, y_train, X_val, y_val, epochs, batch_size, model_path, scaler_path,
                                   scaler, label_dist):
     # 1. 计算类别权重（解决潜在类别不平衡，提升少数类样本拟合能力）
@@ -221,7 +221,7 @@ def train_and_save_ultimate_model(model, X_train, y_train, X_val, y_val, epochs,
     }
     print(f"类别权重已计算：0={class_weight[0]:.4f}，1={class_weight[1]:.4f}（适配标签分布）")
 
-    # 2. 早停回调（优化耐心值，适配复杂多场景数据）
+    # 2. 早停回调
     early_stopping = keras.callbacks.EarlyStopping(
         monitor="val_loss",
         patience=12,  # 进一步延长，给数据增强后的模型更多收敛时间
@@ -239,7 +239,7 @@ def train_and_save_ultimate_model(model, X_train, y_train, X_val, y_val, epochs,
     )
 
     # 4. 开始训练（加入类别权重）
-    print("\n✅ 高精度模型训练（数据增强+类别权重+进阶学习率调度）：")
+    print("\n 高精度模型训练（数据增强+类别权重+进阶学习率调度）：")
     history = model.fit(
         X_train, y_train,
         epochs=epochs,
@@ -252,9 +252,9 @@ def train_and_save_ultimate_model(model, X_train, y_train, X_val, y_val, epochs,
 
     # 5. 保存核心文件
     model.save(model_path)
-    print(f"\n✅ 高精度模型已保存至：{model_path}")
+    print(f"\n 高精度模型已保存至：{model_path}")
     joblib.dump(scaler, scaler_path)
-    print(f"✅ 高精度归一化器已保存至：{scaler_path}")
+    print(f" 高精度归一化器已保存至：{scaler_path}")
 
     # 6. 打印最终结果
     val_loss, val_acc = model.evaluate(X_val, y_val, verbose=0)
@@ -262,11 +262,11 @@ def train_and_save_ultimate_model(model, X_train, y_train, X_val, y_val, epochs,
     print(f"训练完成！最终验证集损失：{val_loss:.4f}")
     print(f"训练完成！最终验证集准确率：{val_acc:.4f}")
     if val_acc >= 0.85:
-        print(f"✅ 验证集准确率≥0.85，满足STM32部署要求！")
+        print(f" 验证集准确率≥0.85，满足STM32部署要求！")
     elif val_acc >= 0.8:
-        print(f"✅ 验证集准确率≥0.8，满足部署要求，可直接进入量化流程！")
+        print(f" 验证集准确率≥0.8，满足部署要求")
     else:
-        print(f"⚠️  准确率仍偏低，建议统一「微滑」标注标准后重新训练（非代码问题）")
+        print(f"  准确率偏低")
     print("=" * 50)
 
     return history
@@ -279,7 +279,7 @@ history = train_and_save_ultimate_model(
 )
 
 # ===================== 第六步：版本样本验证 =====================
-print("\n✅ 版本单个样本时间步分类结果验证：")
+print("\ 版本单个样本时间步分类结果验证：")
 sample_pred = model.predict(X_val[0:1])
 sample_pred_label = (sample_pred > 0.5).astype(int)
 print(f"验证集第一个样本（{WINDOW_LENGTH}个时间步）预测标签：\n{sample_pred_label[0].reshape(-1, 1)}")
