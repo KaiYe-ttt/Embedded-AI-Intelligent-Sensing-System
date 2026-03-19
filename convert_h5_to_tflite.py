@@ -10,10 +10,10 @@ CALIBRATION_SAMPLES = 100  # 校准数据集样本数（100足够保证量化精
 # ===================== 步骤1：加载H5模型 =====================
 try:
     model = keras.models.load_model(H5_MODEL_PATH)
-    print(f"✅ 成功加载H5模型：{H5_MODEL_PATH}")
-    print(f"✅ 模型输入形状：{model.input_shape}（需匹配校准数据集形状）")
+    print(f" 成功加载H5模型：{H5_MODEL_PATH}")
+    print(f" 模型输入形状：{model.input_shape}（需匹配校准数据集形状）")
 except Exception as e:
-    print(f"❌ 加载H5模型失败：{e}")
+    print(f" 加载H5模型失败：{e}")
     exit()
 
 # ===================== 步骤2：配置TFLite转换器（含量化+LSTM兼容修正） =====================
@@ -53,9 +53,9 @@ converter._experimental_lower_tensor_list_ops = False
 # ===================== 步骤3：执行量化转换 =====================
 try:
     int8_tflite_model = converter.convert()
-    print("✅ 成功完成8位整数量化转换")
+    print(" 成功完成8位整数量化转换")
 except Exception as e:
-    print(f"❌ 8位整数量化转换失败：{e}")
+    print(f" 8位整数量化转换失败：{e}")
     exit()
 
 # ===================== 步骤4：保存量化后的TFLite模型 =====================
@@ -64,9 +64,9 @@ try:
         f.write(int8_tflite_model)
 
     model_size = len(int8_tflite_model) / 1024
-    print(f"✅ 8位量化TFLite模型已生成：{INT8_TFLITE_PATH}")
-    print(f"✅ 量化后模型大小：{model_size:.2f} KB（STM32F103可轻松容纳）")
-    print(f"✅ 下一步：使用该模型转换为C数组（可直接复用你的tflite_to_c_array函数）")
+    print(f" 8位量化TFLite模型已生成：{INT8_TFLITE_PATH}")
+    print(f" 量化后模型大小：{model_size:.2f} KB（STM32F103可轻松容纳）")
+    print(f" 下一步：使用该模型转换为C数组（可直接复用你的tflite_to_c_array函数）")
 except Exception as e:
-    print(f"❌ 保存量化TFLite模型失败：{e}")
+    print(f" 保存量化TFLite模型失败：{e}")
     exit()
